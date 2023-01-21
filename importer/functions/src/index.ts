@@ -17,7 +17,7 @@ import {
 
 export const tipsportFetcher = functions
   .region("europe-west3")
-  .pubsub.schedule("*/30 * * * *")
+  .pubsub.schedule("*/10 * * * *")
   .onRun(async () => {
     const db = initializeDB();
     const elections: Election[] = [];
