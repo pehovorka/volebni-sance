@@ -18,6 +18,7 @@ import {
 export const tipsportFetcher = functions
   .region("europe-west3")
   .pubsub.schedule("*/10 * * * *")
+  .timeZone("Europe/Prague")
   .onRun(async () => {
     const db = initializeDB();
     const elections: Election[] = [];
