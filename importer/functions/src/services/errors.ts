@@ -1,11 +1,5 @@
-import { logger, type Response } from "firebase-functions/v1";
+import { logger } from "firebase-functions/v1";
 
-export const throwError = (
-  status: number,
-  message: string,
-  response: Response
-) => {
+export const throwError = (message: string) => {
   logger.error(message);
-  response.status(status);
-  response.json({ error: message });
 };

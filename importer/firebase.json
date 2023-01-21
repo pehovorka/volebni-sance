@@ -1,10 +1,27 @@
 {
   "functions": {
-    "predeploy": ["cd functions && yarn && yarn --cwd \"$RESOURCE_DIR\" build"],
+    "predeploy": [
+      "cd functions && yarn && yarn --cwd \"$RESOURCE_DIR\" build"
+    ],
     "source": "functions"
   },
   "firestore": {
     "rules": "firestore.rules",
     "indexes": "firestore.indexes.json"
+  },
+  "emulators": {
+    "functions": {
+      "port": 5001
+    },
+    "firestore": {
+      "port": 8080
+    },
+    "pubsub": {
+      "port": 8085
+    },
+    "ui": {
+      "enabled": true
+    },
+    "singleProjectMode": true
   }
 }

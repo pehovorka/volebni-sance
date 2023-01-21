@@ -17,7 +17,8 @@ import {
 
 export const tipsportFetcher = functions
   .region("europe-west3")
-  .https.onRequest(async (request, response) => {
+  .pubsub.schedule("*/30 * * * *")
+  .onRun(async () => {
     const db = initializeDB();
     const elections: Election[] = [];
 
@@ -27,7 +28,7 @@ export const tipsportFetcher = functions
       .get();
 
     if (electionsRef.empty) {
-      throwError(404, "No active elections found.", response);
+      throwError("No active elections found.");
       return;
     } else {
       electionsRef.forEach((doc) => {
@@ -45,7 +46,7 @@ export const tipsportFetcher = functions
 
     const sessionId = await getSessionId();
     if (!sessionId) {
-      throwError(500, "Session ID could not be retrieved.", response);
+      throwError("Session ID could not be retrieved");
       return;
     }
 
@@ -57,13 +58,13 @@ export const tipsportFetcher = functions
             sessionId
           );
           if (!matchDetails) {
-            throwError(500, "Match details could not be retrieved.", response);
+            throwError("Match details could not be retrieved.");
             return;
           }
 
           const parsedDetails = parseMatchDetails(matchDetails);
           if (!parsedDetails) {
-            throwError(500, "Candidates could not be retrieved.", response);
+            throwError("Candidates could not be retrieved.");
             return;
           }
 
@@ -80,5 +81,4 @@ export const tipsportFetcher = functions
     }
 
     functions.logger.info("All records were saved");
-    response.json({ success: true });
   });
