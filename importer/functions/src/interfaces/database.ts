@@ -7,8 +7,8 @@ export enum DataType {
 }
 
 export enum CollectionName {
-  elections = "elections",
-  electionRecords = "electionRecords",
+  Elections = "elections",
+  ElectionRecords = "electionRecords",
 }
 
 export interface Election {
@@ -20,7 +20,7 @@ export interface Election {
 }
 
 export interface DataSource {
-  eventId: string;
+  eventId: number;
   service: Service;
   type: DataType;
 }
@@ -43,6 +43,6 @@ export interface Candidate {
 }
 
 export interface Collections {
-  [CollectionName.elections]: Election[];
-  [CollectionName.electionRecords]: ElectionRecord[];
+  [CollectionName.Elections]: Election[];
+  [CollectionName.ElectionRecords]: ElectionRecord[];
 }
