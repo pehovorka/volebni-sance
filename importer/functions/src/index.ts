@@ -1,3 +1,4 @@
+import { initializeApp } from "firebase-admin/app";
 import * as functions from "firebase-functions";
 import {
   CollectionName,
@@ -14,6 +15,8 @@ import {
   getSessionId,
   parseMatchDetails,
 } from "./services/tipsport";
+
+initializeApp();
 
 export const tipsportFetcher = functions
   .region("europe-west3")
