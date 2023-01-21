@@ -1,9 +1,6 @@
 {
   "functions": {
-    "predeploy": [
-      "npm --prefix \"$RESOURCE_DIR\" run lint",
-      "npm --prefix \"$RESOURCE_DIR\" run build"
-    ],
+    "predeploy": ["cd functions && yarn && yarn --cwd \"$RESOURCE_DIR\" build"],
     "source": "functions"
   },
   "firestore": {

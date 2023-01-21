@@ -7,7 +7,7 @@ import {
   Service,
 } from "./interfaces/database";
 import { throwError } from "./services/errors";
-import { initializeDB } from "./services/initializeDb";
+import { initializeDB } from "./services/initializeDB";
 import { storeRecord } from "./services/storeRecord";
 import {
   getMatchDetails,
