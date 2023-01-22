@@ -18,14 +18,17 @@ export const CurrentOdds = ({ currentOdds }: CurrentOddsProps) => {
           height={300}
           className={styles.candidateImage}
         />
-        <div className={styles.candidateDetails}>
+        <div
+          className={styles.candidateDetails}
+          style={{ alignItems: "flex-end" }}
+        >
           <span className={styles.candidateOdds}>
             {currentOdds.pavel.value.toLocaleString("cs-CZ", {
               maximumFractionDigits: 1,
               style: "percent",
             })}
           </span>
-          <span className={styles.candidateName}>{currentOdds.pavel.name}</span>
+          <h3 className={styles.candidateName}>{currentOdds.pavel.name}</h3>
         </div>
       </div>
       <div className={styles.candidate}>
@@ -36,7 +39,7 @@ export const CurrentOdds = ({ currentOdds }: CurrentOddsProps) => {
               style: "percent",
             })}
           </span>
-          <span className={styles.candidateName}>{currentOdds.babis.name}</span>
+          <h3 className={styles.candidateName}>{currentOdds.babis.name}</h3>
         </div>
         <Image
           src={"/images/andrej_babis.png"}
