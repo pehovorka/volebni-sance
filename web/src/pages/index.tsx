@@ -68,6 +68,7 @@ export default function Home({ chartData, currentOdds }: Props) {
             year: "numeric",
             hour: "numeric",
             minute: "numeric",
+            timeZone: "Europe/Prague",
           })}
       </div>
     </>
