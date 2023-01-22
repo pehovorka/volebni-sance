@@ -28,7 +28,7 @@ export default function Home({ data }: Props) {
       <h1 className={styles.title}>Pavel vs. Babiš – prezident 2023</h1>
       <div className={styles.chart}>
         <ResponsiveLine
-          margin={{ top: 50, right: 110, bottom: 70, left: 80 }}
+          margin={{ top: 50, right: 50, bottom: 70, left: 80 }}
           data={data}
           xScale={{
             format: "%Y-%m-%dT%H:%M:%S.%LZ",
