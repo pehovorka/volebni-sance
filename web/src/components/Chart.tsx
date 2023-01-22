@@ -1,10 +1,14 @@
 import { ResponsiveLine, Serie } from "@nivo/line";
+import { useWindowDimensions } from "@/hooks/useWindowDimensions";
 
 interface ChartProps {
   data: Serie[];
 }
 
 export const Chart = ({ data }: ChartProps) => {
+  const { width } = useWindowDimensions();
+  const ticks = width ? Math.floor(width / 140) : 10;
+
   return (
     <ResponsiveLine
       margin={{ top: 50, right: 50, bottom: 70, left: 80 }}
@@ -18,6 +22,7 @@ export const Chart = ({ data }: ChartProps) => {
         legend: "Datum a čas",
         legendOffset: 40,
         legendPosition: "middle",
+        tickValues: ticks,
       }}
       axisLeft={{
         format: ".0%",
@@ -33,11 +38,8 @@ export const Chart = ({ data }: ChartProps) => {
       }}
       xFormat="time:%d.%m.%Y %H:%M"
       yFormat=".0%"
-      pointSize={10}
-      pointColor={{ theme: "background" }}
-      pointBorderWidth={2}
-      pointBorderColor={{ from: "serieColor" }}
-      pointLabelYOffset={-12}
+      lineWidth={8}
+      enablePoints={false}
       sliceTooltip={({ slice }) => (
         <div
           style={{

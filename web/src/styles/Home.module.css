@@ -1,5 +1,7 @@
 .chart {
-    height: 40rem
+    height: 60vh;
+    min-height: 25rem;
+    max-height: 40rem;
 }
 
 .title {
@@ -19,7 +21,7 @@
 .currentOdds {
     display: flex;
     padding: 1rem;
-    gap: 3rem;
+    gap: 1.5rem;
     justify-content: center;
 }
 
