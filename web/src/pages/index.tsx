@@ -22,13 +22,19 @@ import { getAdjustedProbability, getAdjustmentRatio } from "@/utils/odds";
 import { DatumValue } from "@nivo/core";
 
 export interface CurrentOdds {
-  date: DatumValue;
-  value: DatumValue;
-  id: string | number;
+  date: string;
+  pavel: {
+    name: string;
+    value: number;
+  };
+  babis: {
+    name: string;
+    value: number;
+  };
 }
 interface Props {
   chartData: Serie[] | null;
-  currentOdds: CurrentOdds[] | null;
+  currentOdds: CurrentOdds | null;
 }
 
 export default function Home({ chartData, currentOdds }: Props) {
@@ -44,7 +50,7 @@ export default function Home({ chartData, currentOdds }: Props) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <h1 className={styles.title}>Pavel vs. Babiš — prezident 2023</h1>
+      <h1 className={styles.title}>Pavel vs. Babiš</h1>
       <h2 className={styles.subTitle}>
         Aktuální pravděpodobnost vítězství podle sázkových kanceláří
       </h2>
@@ -62,7 +68,7 @@ export default function Home({ chartData, currentOdds }: Props) {
       <div className={styles.source}>
         Zdroj: Tipsport.cz,{" "}
         {currentOdds &&
-          new Date(currentOdds[0].date).toLocaleDateString("cs-CZ", {
+          new Date(currentOdds.date).toLocaleDateString("cs-CZ", {
             day: "numeric",
             month: "numeric",
             year: "numeric",
@@ -124,14 +130,37 @@ export async function getStaticProps() {
     });
   }
 
-  const currentOdds = chartData?.map((serie) => {
+  const currentAdjustmentRatio = getAdjustmentRatio(
+    documents[0].candidates.map((c) => c.odds)
+  );
+  const currentOdds = {
+    date: documents[0].date.toISOString(),
+    pavel: {
+      name: "Petr Pavel",
+      value: getAdjustedProbability(
+        documents[0].candidates.find((c) => c.id === "90005")!.odds,
+        currentAdjustmentRatio
+      ),
+    },
+    babis: {
+      name: "Andrej Babiš",
+      value: getAdjustedProbability(
+        documents[0].candidates.find((c) => c.id === "90004")!.odds,
+        currentAdjustmentRatio
+      ),
+    },
+  };
+
+  console.log(documents[0]);
+
+  /*   const currentOdds = chartData?.map((serie) => {
     const lastItem = serie.data[0];
     return {
       date: lastItem.x,
       id: serie.id,
       value: lastItem.y,
     };
-  });
+  }); */
 
   return {
     props: {
