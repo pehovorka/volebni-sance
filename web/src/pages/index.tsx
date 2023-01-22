@@ -1,6 +1,4 @@
 import Head from "next/head";
-import Image from "next/image";
-import { Montserrat } from "@next/font/google";
 import styles from "@/styles/Home.module.css";
 import { db } from "@/utils/firebase";
 import { collection, doc, getDocs, Timestamp } from "firebase/firestore";
@@ -55,21 +53,48 @@ export default function Home({ data }: Props) {
             stacked: false,
           }}
           xFormat="time:%d.%m.%Y %H:%M"
-          /* {(date) =>
-              new Date(date).toLocaleString("cs-CZ", {
-                month: "numeric",
-                day: "numeric",
-                hour: "numeric",
-                minute: "numeric",
-              })
-            } */
           yFormat=".0%"
           pointSize={10}
           pointColor={{ theme: "background" }}
           pointBorderWidth={2}
           pointBorderColor={{ from: "serieColor" }}
           pointLabelYOffset={-12}
-          useMesh={true}
+          sliceTooltip={({ slice }) => (
+            <div
+              style={{
+                background: "white",
+                padding: "0.875rem",
+                border: "1px solid #ccc",
+              }}
+            >
+              <div
+                style={{
+                  textAlign: "center",
+                  borderBottom: "1px solid #ccc",
+                  paddingBottom: "0.275rem",
+                  marginBottom: "0.375rem",
+                }}
+              >
+                {slice.points[0].data.xFormatted}
+              </div>
+
+              {slice.points.map((point) => (
+                <div
+                  key={point.serieId}
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    gap: "1rem",
+                    color: point.serieColor,
+                    padding: "3px 0",
+                  }}
+                >
+                  <strong>{point.serieId}</strong> {point.data.yFormatted}
+                </div>
+              ))}
+            </div>
+          )}
+          enableSlices="x"
           colors={{ scheme: "category10" }}
           legends={[
             {
