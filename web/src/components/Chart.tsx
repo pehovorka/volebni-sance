@@ -13,6 +13,10 @@ export const Chart = ({ data }: ChartProps) => {
     <ResponsiveLine
       margin={{ top: 50, right: 50, bottom: 70, left: 80 }}
       data={data}
+      theme={{
+        textColor: "#fff",
+        fontSize: 14,
+      }}
       xScale={{
         format: "%Y-%m-%dT%H:%M:%S.%LZ",
         type: "time",
@@ -80,7 +84,7 @@ export const Chart = ({ data }: ChartProps) => {
         </div>
       )}
       enableSlices="x"
-      colors={{ scheme: "category10" }}
+      colors={{ scheme: "set2" }}
       legends={[
         {
           anchor: "top",

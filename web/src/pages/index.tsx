@@ -20,6 +20,8 @@ import {
 } from "../../../importer/functions/src/interfaces/database";
 import { getAdjustedProbability, getAdjustmentRatio } from "@/utils/odds";
 import { DatumValue } from "@nivo/core";
+import { ArrowDown } from "@/components/ArrowDown";
+import Link from "next/link";
 
 export interface CurrentOdds {
   date: string;
@@ -50,33 +52,45 @@ export default function Home({ chartData, currentOdds }: Props) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <h1 className={styles.title}>Pavel vs. Babiš</h1>
-      <h2 className={styles.subTitle}>
-        Aktuální pravděpodobnost vítězství podle sázkových kanceláří
-      </h2>
+      <section className={styles.section}>
+        <h1 className={styles.title}>Pavel vs. Babiš</h1>
+        <h2 className={styles.subTitle}>
+          Aktuální pravděpodobnost vítězství podle sázkových kanceláří
+        </h2>
+        <CurrentOdds currentOdds={currentOdds} />
+        <Link href="#chart" scroll={false}>
+          <div className={styles.arrowContainer}>
+            historický vývoj
+            <ArrowDown className={styles.arrow} />
+          </div>
+        </Link>
+      </section>
+      <section
+        className={`${styles.section} ${styles.chartSection}`}
+        id="chart"
+      >
+        <h2>Historický vývoj pravděpodobnosti vítězství</h2>
+        <div className={styles.chart}>
+          {chartData ? (
+            <Chart data={chartData} />
+          ) : (
+            "Nepodařilo se načíst data :("
+          )}
+        </div>
 
-      <CurrentOdds currentOdds={currentOdds} />
-
-      <div className={styles.chart}>
-        {chartData ? (
-          <Chart data={chartData} />
-        ) : (
-          "Nepodařilo se načíst data :("
-        )}
-      </div>
-
-      <div className={styles.source}>
-        Zdroj: Tipsport.cz,{" "}
-        {currentOdds &&
-          new Date(currentOdds.date).toLocaleDateString("cs-CZ", {
-            day: "numeric",
-            month: "numeric",
-            year: "numeric",
-            hour: "numeric",
-            minute: "numeric",
-            timeZone: "Europe/Prague",
-          })}
-      </div>
+        <div className={styles.source}>
+          Zdroj: Tipsport.cz,{" "}
+          {currentOdds &&
+            new Date(currentOdds.date).toLocaleDateString("cs-CZ", {
+              day: "numeric",
+              month: "numeric",
+              year: "numeric",
+              hour: "numeric",
+              minute: "numeric",
+              timeZone: "Europe/Prague",
+            })}
+        </div>
+      </section>
     </>
   );
 }
