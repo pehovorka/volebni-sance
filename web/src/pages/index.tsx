@@ -19,7 +19,6 @@ import {
   ElectionRecord,
 } from "../../../importer/functions/src/interfaces/database";
 import { getAdjustedProbability, getAdjustmentRatio } from "@/utils/odds";
-import { DatumValue } from "@nivo/core";
 import { ArrowDown } from "@/components/ArrowDown";
 import Link from "next/link";
 
@@ -49,6 +48,10 @@ export default function Home({ chartData, currentOdds }: Props) {
           content="Kdo bude podle sázkových kanceláří novým prezidentem?"
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta
+          property="og:image"
+          content="https://volebnisance.cz/images/og_image.png"
+        />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
@@ -96,7 +99,6 @@ export default function Home({ chartData, currentOdds }: Props) {
 }
 
 export async function getStaticProps() {
-  console.log("Revalidation in progress...");
   const documents: ElectionRecord[] = [];
   const electionRecordsRef = collection(db, CollectionName.ElectionRecords);
   const q = query(
@@ -164,17 +166,6 @@ export async function getStaticProps() {
       ),
     },
   };
-
-  console.log(documents[0]);
-
-  /*   const currentOdds = chartData?.map((serie) => {
-    const lastItem = serie.data[0];
-    return {
-      date: lastItem.x,
-      id: serie.id,
-      value: lastItem.y,
-    };
-  }); */
 
   return {
     props: {
