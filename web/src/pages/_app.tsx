@@ -8,7 +8,7 @@ const montserrat = Montserrat({ subsets: ["latin-ext"], display: "swap" });
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <main className={montserrat.className}>
-      <Component {...pageProps} />;
+      <Component {...pageProps} />
     </main>
   );
 }

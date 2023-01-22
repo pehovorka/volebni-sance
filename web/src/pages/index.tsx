@@ -12,6 +12,7 @@ import {
 import styles from "@/styles/Home.module.css";
 
 import { Chart } from "@/components/Chart";
+import { CurrentOdds } from "@/components/CurrentOdds";
 import { db } from "@/utils/firebase";
 import {
   CollectionName,
@@ -24,6 +25,15 @@ interface Props {
 }
 
 export default function Home({ data }: Props) {
+  const currentValues = data?.map((serie) => {
+    const lastItem = serie.data[0];
+    return {
+      date: new Date(lastItem.x!),
+      id: serie.id,
+      value: lastItem.y as number,
+    };
+  });
+
   return (
     <>
       <Head>
@@ -35,9 +45,28 @@ export default function Home({ data }: Props) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+
       <h1 className={styles.title}>Pavel vs. Babiš – prezident 2023</h1>
+      <h2 className={styles.subTitle}>
+        Aktuální pravděpodobnost vítězství podle sázkových kanceláří
+      </h2>
+
+      <CurrentOdds currentValues={currentValues} />
+
       <div className={styles.chart}>
         {data ? <Chart data={data} /> : "Nepodařilo se načíst data :("}
+      </div>
+
+      <div className={styles.source}>
+        Zdroj: Tipsport.cz,{" "}
+        {currentValues &&
+          currentValues[0].date.toLocaleDateString("cs-CZ", {
+            day: "numeric",
+            month: "numeric",
+            year: "numeric",
+            hour: "numeric",
+            minute: "numeric",
+          })}
       </div>
     </>
   );
