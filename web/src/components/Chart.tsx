@@ -70,7 +70,11 @@ export const Chart = ({ data }: ChartProps) => {
                 padding: "3px 0",
               }}
             >
-              <strong>{point.serieId}</strong> {point.data.yFormatted}
+              <strong>{point.serieId}</strong>{" "}
+              {point.data.y.toLocaleString("cs-CZ", {
+                maximumFractionDigits: 1,
+                style: "percent",
+              })}
             </div>
           ))}
         </div>
