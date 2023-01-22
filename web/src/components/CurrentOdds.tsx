@@ -1,20 +1,15 @@
+import { CurrentOdds as ICurrentOdds } from "@/pages";
 import styles from "@/styles/Home.module.css";
 
 interface CurrentOddsProps {
-  currentValues:
-    | {
-        date: Date;
-        id: string | number;
-        value: number;
-      }[]
-    | undefined;
+  currentOdds: ICurrentOdds[] | null;
 }
 
-export const CurrentOdds = ({ currentValues }: CurrentOddsProps) => {
+export const CurrentOdds = ({ currentOdds }: CurrentOddsProps) => {
   return (
     <section className={styles.currentOdds}>
-      {currentValues &&
-        currentValues.map((candidate) => (
+      {currentOdds &&
+        currentOdds.map((candidate) => (
           <div key={candidate.id} className={styles.candidate}>
             <span className={styles.candidateName}>{candidate.id}</span>
             <span className={styles.candidateOdds}>

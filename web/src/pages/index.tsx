@@ -19,25 +19,23 @@ import {
   ElectionRecord,
 } from "../../../importer/functions/src/interfaces/database";
 import { getAdjustedProbability, getAdjustmentRatio } from "@/utils/odds";
+import { DatumValue } from "@nivo/core";
 
+export interface CurrentOdds {
+  date: DatumValue;
+  value: DatumValue;
+  id: string | number;
+}
 interface Props {
-  data: Serie[] | null;
+  chartData: Serie[] | null;
+  currentOdds: CurrentOdds[] | null;
 }
 
-export default function Home({ data }: Props) {
-  const currentValues = data?.map((serie) => {
-    const lastItem = serie.data[0];
-    return {
-      date: new Date(lastItem.x!),
-      id: serie.id,
-      value: lastItem.y as number,
-    };
-  });
-
+export default function Home({ chartData, currentOdds }: Props) {
   return (
     <>
       <Head>
-        <title>Pavel vs. Babiš – prezident 2023 | Volební šance</title>
+        <title>Pavel vs. Babiš — prezident 2023 | Volební šance</title>
         <meta
           name="description"
           content="Kdo bude podle sázkových kanceláří novým prezidentem?"
@@ -46,21 +44,25 @@ export default function Home({ data }: Props) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <h1 className={styles.title}>Pavel vs. Babiš – prezident 2023</h1>
+      <h1 className={styles.title}>Pavel vs. Babiš — prezident 2023</h1>
       <h2 className={styles.subTitle}>
         Aktuální pravděpodobnost vítězství podle sázkových kanceláří
       </h2>
 
-      <CurrentOdds currentValues={currentValues} />
+      <CurrentOdds currentOdds={currentOdds} />
 
       <div className={styles.chart}>
-        {data ? <Chart data={data} /> : "Nepodařilo se načíst data :("}
+        {chartData ? (
+          <Chart data={chartData} />
+        ) : (
+          "Nepodařilo se načíst data :("
+        )}
       </div>
 
       <div className={styles.source}>
         Zdroj: Tipsport.cz,{" "}
-        {currentValues &&
-          currentValues[0].date.toLocaleDateString("cs-CZ", {
+        {currentOdds &&
+          new Date(currentOdds[0].date).toLocaleDateString("cs-CZ", {
             day: "numeric",
             month: "numeric",
             year: "numeric",
@@ -95,12 +97,12 @@ export async function getStaticProps() {
 
   const candidateIds = documents[0]?.candidates.map((c) => c.id);
 
-  let result: Serie[] | null;
+  let chartData: Serie[] | null;
 
   if (!candidateIds) {
-    result = null;
+    chartData = null;
   } else {
-    result = candidateIds.map((candidateId) => {
+    chartData = candidateIds.map((candidateId) => {
       const name = documents[0].candidates.find(
         (c) => c.id === candidateId
       )?.name;
@@ -121,9 +123,19 @@ export async function getStaticProps() {
     });
   }
 
+  const currentOdds = chartData?.map((serie) => {
+    const lastItem = serie.data[0];
+    return {
+      date: lastItem.x,
+      id: serie.id,
+      value: lastItem.y,
+    };
+  });
+
   return {
     props: {
-      data: result,
+      chartData,
+      currentOdds,
     },
   };
 }
