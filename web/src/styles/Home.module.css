@@ -1,0 +1,10 @@
+.chart {
+    height: 40rem
+}
+
+.title {
+    font-size: 3rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+    text-align: center;
+}

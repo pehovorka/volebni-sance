@@ -1,6 +1,6 @@
 import Head from "next/head";
 import Image from "next/image";
-import { Inter } from "@next/font/google";
+import { Montserrat } from "@next/font/google";
 import styles from "@/styles/Home.module.css";
 import { db } from "@/utils/firebase";
 import { collection, doc, getDocs, Timestamp } from "firebase/firestore";
@@ -8,14 +8,14 @@ import {
   CollectionName,
   ElectionRecord,
 } from "../../../importer/functions/src/interfaces/database";
-
-const inter = Inter({ subsets: ["latin"] });
+import { getAdjustedProbability, getAdjustmentRatio } from "@/utils/odds";
+import { ResponsiveLine, Serie } from "@nivo/line";
 
 interface Props {
-  election: ElectionRecord[];
+  data: Serie[];
 }
 
-export default function Home({ election }: Props) {
+export default function Home({ data }: Props) {
   return (
     <>
       <Head>
@@ -27,18 +27,84 @@ export default function Home({ election }: Props) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className={styles.main}>
-        <h1 className={styles.title}>Pavel vs. Babiš – prezident 2023</h1>
-        <code>
-          <pre>{JSON.stringify(election, ",", 2)}</pre>
-        </code>
-      </main>
+      <h1 className={styles.title}>Pavel vs. Babiš – prezident 2023</h1>
+      <div className={styles.chart}>
+        <ResponsiveLine
+          margin={{ top: 50, right: 110, bottom: 70, left: 80 }}
+          data={data}
+          xScale={{
+            format: "%Y-%m-%dT%H:%M:%S.%LZ",
+            type: "time",
+          }}
+          axisBottom={{
+            format: "%d.%m. %H:%M",
+            legend: "Datum a čas",
+            legendOffset: 40,
+            legendPosition: "middle",
+          }}
+          axisLeft={{
+            format: ".0%",
+            legend: "Pravděpodobnost zvolení",
+            legendOffset: -50,
+            legendPosition: "middle",
+          }}
+          yScale={{
+            type: "linear",
+            min: 0,
+            max: 1,
+            stacked: false,
+          }}
+          xFormat="time:%d.%m.%Y %H:%M"
+          /* {(date) =>
+              new Date(date).toLocaleString("cs-CZ", {
+                month: "numeric",
+                day: "numeric",
+                hour: "numeric",
+                minute: "numeric",
+              })
+            } */
+          yFormat=".0%"
+          pointSize={10}
+          pointColor={{ theme: "background" }}
+          pointBorderWidth={2}
+          pointBorderColor={{ from: "serieColor" }}
+          pointLabelYOffset={-12}
+          useMesh={true}
+          colors={{ scheme: "category10" }}
+          legends={[
+            {
+              anchor: "top",
+              direction: "row",
+              justify: false,
+              translateX: 0,
+              translateY: -30,
+              itemsSpacing: 30,
+              itemDirection: "left-to-right",
+              itemWidth: 80,
+              itemHeight: 20,
+              itemOpacity: 0.85,
+              symbolSize: 12,
+              symbolShape: "circle",
+              symbolBorderColor: "rgba(0, 0, 0, .5)",
+              effects: [
+                {
+                  on: "hover",
+                  style: {
+                    itemBackground: "rgba(0, 0, 0, .03)",
+                    itemOpacity: 1,
+                  },
+                },
+              ],
+            },
+          ]}
+        />
+      </div>
     </>
   );
 }
 
 export async function getStaticProps() {
-  const documents: any[] = [];
+  const documents: ElectionRecord[] = [];
   const querySnapshot = await getDocs(
     collection(db, CollectionName.ElectionRecords)
   );
@@ -48,17 +114,36 @@ export async function getStaticProps() {
     };
     documents.push({
       ...data,
-      date: data.date.toDate().toISOString(),
+      date: data.date.toDate(),
     });
   });
 
+  const candidateIds = documents[0].candidates.map((c) => c.id);
+
+  const result = candidateIds.map((candidateId) => {
+    const name = documents[0].candidates.find(
+      (c) => c.id === candidateId
+    )!.name;
+    return {
+      id: name.split(" ").reverse().join(" "),
+      data: documents.map((doc) => {
+        const adjustmentRatio = getAdjustmentRatio(
+          doc.candidates.map((c) => c.odds)
+        );
+        const candidate = doc.candidates.find((c) => c.id === candidateId)!;
+        return {
+          x: doc.date.toISOString(),
+          y: getAdjustedProbability(candidate.odds, adjustmentRatio),
+        };
+      }),
+    };
+  });
+  console.log(result);
+
   return {
     props: {
-      election: documents,
+      data: result,
     },
-    // Next.js will attempt to re-generate the page:
-    // - When a request comes in
-    // - At most once every 10 seconds
-    revalidate: 10, // In seconds
+    revalidate: 60, // In seconds
   };
 }

@@ -20,7 +20,7 @@ initializeApp();
 
 export const tipsportFetcher = functions
   .region("europe-west3")
-  .pubsub.schedule("*/10 * * * *")
+  .pubsub.schedule("*/30 * * * *")
   .timeZone("Europe/Prague")
   .onRun(async () => {
     const db = initializeDB();
