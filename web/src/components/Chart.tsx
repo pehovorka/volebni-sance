@@ -11,7 +11,7 @@ export const Chart = ({ data }: ChartProps) => {
 
   return (
     <ResponsiveLine
-      margin={{ top: 50, right: 50, bottom: 70, left: 80 }}
+      margin={{ top: 50, right: 15, bottom: 70, left: 70 }}
       data={data}
       theme={{
         textColor: "#fff",
@@ -58,6 +58,8 @@ export const Chart = ({ data }: ChartProps) => {
               borderBottom: "1px solid #ccc",
               paddingBottom: "0.275rem",
               marginBottom: "0.375rem",
+              color: "#000",
+              fontWeight: 600,
             }}
           >
             {slice.points[0].data.xFormatted}

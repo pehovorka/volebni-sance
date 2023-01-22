@@ -85,6 +85,7 @@
     transition: all 0.2s ease-in-out;
     position: relative;
     margin-top: 4rem;
+    margin-bottom: 2rem;
 }
 
 .arrowContainer:hover {
@@ -94,7 +95,7 @@
 .chart {
     height: 80vh;
     min-height: 25rem;
-    max-height: 40rem;
+    max-height: 36rem;
     width: 100%;
 }
 
@@ -107,7 +108,7 @@
 
 
 .source {
-    margin: 3rem;
+    margin-top: 3rem;
 }
 
 @keyframes float {
@@ -130,6 +131,10 @@
 
     .candidate {
         padding: 1rem 3rem 0 3rem;
+    }
+
+    .chart {
+        width: 95%;
     }
 }
     
