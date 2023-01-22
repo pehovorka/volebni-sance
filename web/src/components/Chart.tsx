@@ -26,7 +26,7 @@ export const Chart = ({ data }: ChartProps) => {
       }}
       axisLeft={{
         format: ".0%",
-        legend: "Pravděpodobnost zvolení",
+        legend: "Pravděpodobnost vítězství",
         legendOffset: -50,
         legendPosition: "middle",
       }}

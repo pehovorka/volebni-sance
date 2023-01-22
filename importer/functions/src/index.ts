@@ -9,6 +9,7 @@ import {
 } from "./interfaces/database";
 import { throwError } from "./services/errors";
 import { initializeDB } from "./services/initializeDB";
+import { revalidateWebsite } from "./services/revalidateWebsite";
 import { storeRecord } from "./services/storeRecord";
 import {
   getMatchDetails,
@@ -20,6 +21,7 @@ initializeApp();
 
 export const tipsportFetcher = functions
   .region("europe-west3")
+  .runWith({ secrets: ["REVALIDATE_URL", "REVALIDATE_TOKEN"] })
   .pubsub.schedule("*/30 * * * *")
   .timeZone("Europe/Prague")
   .onRun(async () => {
@@ -83,6 +85,8 @@ export const tipsportFetcher = functions
         }
       }
     }
+
+    await revalidateWebsite();
 
     functions.logger.info("All records were saved");
   });

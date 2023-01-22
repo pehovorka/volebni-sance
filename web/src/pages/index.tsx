@@ -73,6 +73,7 @@ export default function Home({ data }: Props) {
 }
 
 export async function getStaticProps() {
+  console.log("Revalidation in progress...");
   const documents: ElectionRecord[] = [];
   const electionRecordsRef = collection(db, CollectionName.ElectionRecords);
   const q = query(
@@ -124,6 +125,5 @@ export async function getStaticProps() {
     props: {
       data: result,
     },
-    revalidate: 60, // In seconds
   };
 }
