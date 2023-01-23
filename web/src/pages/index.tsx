@@ -27,11 +27,14 @@ export interface CurrentOdds {
   pavel: {
     name: string;
     value: number;
+    odds: number;
   };
   babis: {
     name: string;
     value: number;
+    odds: number;
   };
+  adjustmentRatio: number;
 }
 interface Props {
   chartData: Serie[] | null;
@@ -80,6 +83,18 @@ export default function Home({ chartData, currentOdds }: Props) {
             "Nepodařilo se načíst data :("
           )}
         </div>
+
+        {currentOdds && (
+          <>
+            <h2>Jak probíhá výpočet?</h2>
+            <p>
+              Aktuální kurz Andreje Babiše je{" "}
+              {currentOdds.babis.odds.toLocaleString("cs-CZ")} a Petra Pavla{" "}
+              {currentOdds.pavel.odds.toLocaleString("cs-CZ")}. Následně
+              převrácenou hodnotou zjistíme, jaká je{" "}
+            </p>
+          </>
+        )}
 
         <div className={styles.source}>
           Zdroj: Tipsport.cz,{" "}
@@ -146,26 +161,32 @@ export async function getStaticProps() {
     });
   }
 
-  const currentAdjustmentRatio = getAdjustmentRatio(
-    documents[0].candidates.map((c) => c.odds)
-  );
-  const currentOdds = {
-    date: documents[0].date.toISOString(),
-    pavel: {
-      name: "Petr Pavel",
-      value: getAdjustedProbability(
-        documents[0].candidates.find((c) => c.id === "90005")!.odds,
-        currentAdjustmentRatio
-      ),
-    },
-    babis: {
-      name: "Andrej Babiš",
-      value: getAdjustedProbability(
-        documents[0].candidates.find((c) => c.id === "90004")!.odds,
-        currentAdjustmentRatio
-      ),
-    },
+  const getCurrentOdds = () => {
+    const adjustmentRatio = getAdjustmentRatio(
+      documents[0].candidates.map((c) => c.odds)
+    );
+    const babisOdds =
+      documents[0].candidates.find((c) => c.id === "90004")?.odds ?? 0;
+    const pavelOdds =
+      documents[0].candidates.find((c) => c.id === "90005")?.odds ?? 0;
+
+    return {
+      date: documents[0].date.toISOString(),
+      pavel: {
+        name: "Petr Pavel",
+        value: getAdjustedProbability(pavelOdds, adjustmentRatio),
+        odds: pavelOdds,
+      },
+      babis: {
+        name: "Andrej Babiš",
+        value: getAdjustedProbability(babisOdds, adjustmentRatio),
+        odds: babisOdds,
+      },
+      adjustmentRatio: adjustmentRatio,
+    };
   };
+
+  const currentOdds = getCurrentOdds();
 
   return {
     props: {
