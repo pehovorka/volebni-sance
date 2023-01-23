@@ -41,6 +41,8 @@
     box-shadow: 0 12px 4px -8px rgb(163, 163, 163);
     background-image: linear-gradient(180deg, #5F6E6C, #2C434D);
     border-radius: 0.5rem;
+    width: 100%;
+    justify-content: space-between;
 }
 
 .candidateName {
@@ -58,7 +60,7 @@
 .candidateDetails {
     display: flex;
     flex-direction: column;
-    padding-bottom: 4rem;
+    padding-bottom: 5rem;
     color: #fff;
 }
 
@@ -131,6 +133,8 @@
 
     .candidate {
         padding: 1rem 3rem 0 3rem;
+        width: unset;
+        min-width: 27rem;
     }
 
     .chart {

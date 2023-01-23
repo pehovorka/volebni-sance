@@ -20,7 +20,7 @@ export const CurrentOdds = ({ currentOdds }: CurrentOddsProps) => {
         />
         <div
           className={styles.candidateDetails}
-          style={{ alignItems: "flex-end" }}
+          style={{ alignItems: "flex-end", marginLeft: "-2rem" }}
         >
           <span className={styles.candidateOdds}>
             {currentOdds.pavel.value.toLocaleString("cs-CZ", {
@@ -32,7 +32,10 @@ export const CurrentOdds = ({ currentOdds }: CurrentOddsProps) => {
         </div>
       </div>
       <div className={styles.candidate}>
-        <div className={styles.candidateDetails}>
+        <div
+          className={styles.candidateDetails}
+          style={{ marginRight: "-2rem" }}
+        >
           <span className={styles.candidateOdds}>
             {currentOdds.babis.value.toLocaleString("cs-CZ", {
               maximumFractionDigits: 1,
