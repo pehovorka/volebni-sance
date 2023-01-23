@@ -20,7 +20,7 @@
 
 .subTitle {
     font-size: 1.125rem;
-    font-weight: 500;
+    font-weight: 300;
     margin-bottom: 1rem;
     text-align: center;
 }
@@ -100,7 +100,7 @@
 }
 
 .chartSection {
-    background-image: linear-gradient(180deg,  #22343b, #232a28);
+    background-image: linear-gradient(180deg, #1c2425,  #1c2a31);
     color: #fff;
 }
 

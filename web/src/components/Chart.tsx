@@ -42,7 +42,7 @@ export const Chart = ({ data }: ChartProps) => {
       }}
       xFormat="time:%d.%m.%Y %H:%M"
       yFormat=".0%"
-      lineWidth={8}
+      lineWidth={6}
       enablePoints={false}
       sliceTooltip={({ slice }) => (
         <div
@@ -89,28 +89,18 @@ export const Chart = ({ data }: ChartProps) => {
       colors={{ scheme: "set2" }}
       legends={[
         {
-          anchor: "top",
+          anchor: "top-right",
           direction: "row",
           justify: false,
           translateX: 0,
-          translateY: -30,
+          translateY: -35,
           itemsSpacing: 30,
           itemDirection: "left-to-right",
-          itemWidth: 80,
+          itemWidth: 100,
           itemHeight: 20,
           itemOpacity: 0.85,
           symbolSize: 12,
-          symbolShape: "circle",
-          symbolBorderColor: "rgba(0, 0, 0, .5)",
-          effects: [
-            {
-              on: "hover",
-              style: {
-                itemBackground: "rgba(0, 0, 0, .03)",
-                itemOpacity: 1,
-              },
-            },
-          ],
+          symbolShape: "square",
         },
       ]}
     />
