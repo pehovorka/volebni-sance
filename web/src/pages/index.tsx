@@ -28,6 +28,10 @@ export type CurrentOdds = InferGetStaticPropsType<
   typeof getStaticProps
 >["currentOdds"];
 
+export type ChartData = InferGetStaticPropsType<
+  typeof getStaticProps
+>["chartData"];
+
 export default function Home({
   chartData,
   currentOdds,
@@ -113,7 +117,7 @@ export async function getStaticProps() {
 
   const candidateIds = documents[0]?.candidates.map((c) => c.id);
 
-  let chartData: Serie[] | null;
+  let chartData;
 
   if (!candidateIds) {
     chartData = null;
@@ -133,6 +137,7 @@ export async function getStaticProps() {
           return {
             x: doc.date.toISOString(),
             y: getAdjustedProbability(candidate.odds, adjustmentRatio),
+            odds: candidate.odds,
           };
         }),
       };

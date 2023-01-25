@@ -1,8 +1,9 @@
-import { ResponsiveLine, Serie } from "@nivo/line";
+import { ResponsiveLine, type Point, type SliceTooltipProps } from "@nivo/line";
 import { useWindowDimensions } from "@/hooks/useWindowDimensions";
+import { ChartData } from "@/pages";
 
 interface ChartProps {
-  data: Serie[];
+  data: ChartData;
 }
 
 export const Chart = ({ data }: ChartProps) => {
@@ -12,10 +13,16 @@ export const Chart = ({ data }: ChartProps) => {
   return (
     <ResponsiveLine
       margin={{ top: 50, right: 15, bottom: 70, left: 70 }}
-      data={data}
+      data={data || []}
       theme={{
         textColor: "#fff",
         fontSize: 14,
+        crosshair: {
+          line: {
+            stroke: "#fff",
+            strokeWidth: 3,
+          },
+        },
       }}
       xScale={{
         format: "%Y-%m-%dT%H:%M:%S.%LZ",
@@ -70,17 +77,27 @@ export const Chart = ({ data }: ChartProps) => {
               key={point.serieId}
               style={{
                 display: "flex",
-                justifyContent: "space-between",
-                gap: "1rem",
+                flexDirection: "column",
                 color: point.serieColor,
-                padding: "3px 0",
+                padding: "0.25rem 0",
               }}
             >
-              <strong>{point.serieId}</strong>{" "}
-              {point.data.y.toLocaleString("cs-CZ", {
-                maximumFractionDigits: 1,
-                style: "percent",
-              })}
+              <strong>{point.serieId}</strong>
+              <span>
+                Pravděpodobnost:{" "}
+                {point.data.y.toLocaleString("cs-CZ", {
+                  maximumFractionDigits: 1,
+                  style: "percent",
+                })}
+              </span>
+              <span>
+                Kurz:{" "}
+                {/** TODO: Fix type!
+              @ts-expect-error */}
+                {point.data.odds.toLocaleString("cs-CZ", {
+                  maximumFractionDigits: 2,
+                })}
+              </span>
             </div>
           ))}
         </div>
