@@ -55,7 +55,7 @@ export default function Home({
       <section className={styles.section}>
         <h1 className={styles.title}>Pavel vs. Babiš</h1>
         <h2 className={styles.subTitle}>
-          Aktuální pravděpodobnost vítězství podle kurzů sázkových kanceláří
+          Aktuální pravděpodobnost vítězství podle kurzu Tipsportu
         </h2>
         <CurrentOdds currentOdds={currentOdds} />
         <Link href="#chart" scroll={false}>
