@@ -1,5 +1,5 @@
 import { CurrentOdds as ICurrentOdds } from "@/pages";
-import styles from "@/styles/Home.module.css";
+import styles from "@/styles/CurrentOdds.module.css";
 import Image from "next/image";
 
 interface CurrentOddsProps {
@@ -22,13 +22,19 @@ export const CurrentOdds = ({ currentOdds }: CurrentOddsProps) => {
           className={styles.candidateDetails}
           style={{ alignItems: "flex-end", marginLeft: "-2rem" }}
         >
-          <span className={styles.candidateOdds}>
+          <span className={styles.candidateProbability}>
             {currentOdds.pavel.value.toLocaleString("cs-CZ", {
               maximumFractionDigits: 1,
               style: "percent",
             })}
           </span>
           <h3 className={styles.candidateName}>{currentOdds.pavel.name}</h3>
+          <span className={styles.candidateOdds}>
+            Kurz{" "}
+            {currentOdds.pavel.odds.toLocaleString("cs-CZ", {
+              maximumFractionDigits: 2,
+            })}
+          </span>
         </div>
       </div>
       <div className={styles.candidate}>
@@ -36,13 +42,19 @@ export const CurrentOdds = ({ currentOdds }: CurrentOddsProps) => {
           className={styles.candidateDetails}
           style={{ marginRight: "-2rem" }}
         >
-          <span className={styles.candidateOdds}>
+          <span className={styles.candidateProbability}>
             {currentOdds.babis.value.toLocaleString("cs-CZ", {
               maximumFractionDigits: 1,
               style: "percent",
             })}
           </span>
           <h3 className={styles.candidateName}>{currentOdds.babis.name}</h3>
+          <span className={styles.candidateOdds}>
+            Kurz{" "}
+            {currentOdds.babis.odds.toLocaleString("cs-CZ", {
+              maximumFractionDigits: 2,
+            })}
+          </span>
         </div>
         <Image
           src={"/images/andrej_babis.png"}
