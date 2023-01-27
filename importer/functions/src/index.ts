@@ -39,7 +39,7 @@ export const tipsportFetcher = functions
     } else {
       electionsRef.forEach((doc) => {
         const data = doc.data() as Election;
-        console.log(data);
+        functions.logger.log("Starting importing elections...", data);
         if (
           data.dataSources.some(
             (dataSource) => dataSource.service === Service.Tipsport
@@ -73,6 +73,8 @@ export const tipsportFetcher = functions
             throwError("Candidates could not be retrieved.");
             return;
           }
+
+          console.debug("Parsed details", parsedDetails);
 
           const record: ElectionRecord = {
             date: new Date(),

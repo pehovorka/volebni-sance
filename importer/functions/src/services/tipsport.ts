@@ -1,4 +1,5 @@
 import axios from "axios";
+import { logger } from "firebase-functions/v1";
 import type { TipsportMatchResponse } from "../interfaces/tipsport";
 
 export const getSessionId = async () => {
@@ -21,7 +22,7 @@ export const getSessionId = async () => {
     }
     return undefined;
   } catch (error) {
-    console.error(error);
+    logger.error(error);
     return undefined;
   }
 };
@@ -36,12 +37,28 @@ export const getMatchDetails = async (matchId: number, sessionId: string) => {
         },
       }
     );
+    logger.debug("Received response", response.data);
 
     return response.data.match as TipsportMatchResponse["match"];
   } catch (error) {
-    console.error(error);
-    return undefined;
+    logger.error(error);
   }
+  try {
+    const response = await axios.get(
+      `https://m.tipsport.cz/rest/offer/v2/live/matches/${matchId}`,
+      {
+        headers: {
+          cookie: sessionId,
+        },
+      }
+    );
+    logger.debug("Received fallback response", response.data);
+
+    return response.data.match as TipsportMatchResponse["match"];
+  } catch (error) {
+    logger.error(error);
+  }
+  return undefined;
 };
 
 export const parseMatchDetails = (
@@ -56,15 +73,19 @@ export const parseMatchDetails = (
       odds: candidate.odd,
       active: candidate.active,
       winning: candidate.winning,
-      id: candidate.oppNumber,
+      id:
+        candidate.oppNumber ?? candidate.name.includes("Pavel")
+          ? "90005"
+          : "90004",
     }));
 
   if (!candidates) {
+    logger.error("Candidates couldn't be parsed!");
     return undefined;
   }
 
   const res = {
-    name: matchDetails.name,
+    name: matchDetails.name ?? matchDetails.nameFull,
     eventId: matchDetails.id,
     candidates: candidates,
   };

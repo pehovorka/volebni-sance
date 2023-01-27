@@ -47,7 +47,7 @@ export interface EventTableGroup {
 
 export interface Match {
   id: number;
-  name: string;
+  name?: string;
   nameFull: string;
   idCompetition: number;
   competitionAnnualId: number;

@@ -1,4 +1,5 @@
 import axios from "axios";
+import { logger } from "firebase-functions/v1";
 
 export const revalidateWebsite = async () => {
   try {
@@ -8,7 +9,7 @@ export const revalidateWebsite = async () => {
         secret: process.env.REVALIDATE_TOKEN,
       }
     );
-    console.log("Website was successfully revalidated.");
+    logger.log("Website was successfully revalidated.");
     return;
   } catch (error) {
     console.error(error);
