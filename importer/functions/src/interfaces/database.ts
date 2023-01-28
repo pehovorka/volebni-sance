@@ -1,3 +1,5 @@
+import { KANDIDAT, UCAST } from "./volbyCz";
+
 export enum Service {
   Tipsport = "tipsport",
 }
@@ -9,6 +11,7 @@ export enum DataType {
 export enum CollectionName {
   Elections = "elections",
   ElectionRecords = "electionRecords",
+  ElectionResultRecords = "electionResultRecords",
 }
 
 export interface Election {
@@ -45,4 +48,10 @@ export interface Candidate {
 export interface Collections {
   [CollectionName.Elections]: Election[];
   [CollectionName.ElectionRecords]: ElectionRecord[];
+}
+
+export interface ElectionResultRecord {
+  date: Date;
+  participation?: UCAST["_attributes"];
+  candidates: KANDIDAT["_attributes"][];
 }

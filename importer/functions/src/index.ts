@@ -10,12 +10,13 @@ import {
 import { throwError } from "./services/errors";
 import { initializeDB } from "./services/initializeDB";
 import { revalidateWebsite } from "./services/revalidateWebsite";
-import { storeRecord } from "./services/storeRecord";
+import { storeElectionResultRecord, storeRecord } from "./services/storeRecord";
 import {
   getMatchDetails,
   getSessionId,
   parseMatchDetails,
 } from "./services/tipsport";
+import { getResults } from "./services/volbyCz";
 
 initializeApp();
 
@@ -89,6 +90,43 @@ export const tipsportFetcher = functions
     }
 
     await revalidateWebsite();
+
+    functions.logger.info("All records were saved");
+  });
+
+export const resultsFetcher = functions
+  .region("europe-west3")
+  .runWith({ secrets: ["REVALIDATE_URL", "REVALIDATE_TOKEN"] })
+  .pubsub.schedule("*/2 * * * *")
+  .timeZone("Europe/Prague")
+  .onRun(async () => {
+    const db = initializeDB();
+
+    const results = await getResults();
+    if (!results) {
+      functions.logger.error("Results could not be retrieved.");
+      return;
+    }
+
+    const secondRoundParticipation = results.VYSLEDKY.CR.UCAST.find(
+      (participation) => participation._attributes.KOLO === "2"
+    )?._attributes;
+
+    const secondRoundCandidates = results.VYSLEDKY.CR.KANDIDAT.filter(
+      (candidate) => candidate._attributes.HLASY_2KOLO !== undefined
+    ).map((candidate) => candidate._attributes);
+
+    const resultRecord = {
+      date: new Date(),
+      participation: secondRoundParticipation,
+      candidates: secondRoundCandidates,
+    };
+
+    if (
+      parseInt(resultRecord.participation?.OKRSKY_ZPRAC_PROC ?? "100") !== 100
+    ) {
+      storeElectionResultRecord(resultRecord, db);
+    }
 
     functions.logger.info("All records were saved");
   });
