@@ -1,6 +1,6 @@
 import { ResponsiveLine } from "@nivo/line";
 import { useWindowDimensions } from "~hooks/useWindowDimensions";
-import type { ChartData } from "~pages";
+import type { ChartData } from "~pages/index";
 
 interface ChartProps {
   data: ChartData;
