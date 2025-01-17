@@ -1,12 +1,21 @@
 {
-  "name": "web",
+  "name": "@apps/web",
   "version": "0.1.0",
   "private": true,
-  "scripts": {
+  "scriptsOld": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
+  },
+  "scripts": {
+    "types-check": "tsc --noEmit -w",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "lint:fix": "yarn lint --fix",
+    "cir-dep": "yarn madge ./src --circular --extensions ts,tsx"
   },
   "dependencies": {
     "@next/font": "13.1.4",
@@ -19,6 +28,7 @@
     "eslint": "8.32.0",
     "eslint-config-next": "13.1.4",
     "firebase": "^9.16.0",
+    "madge": "^8.0.0",
     "next": "13.1.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",

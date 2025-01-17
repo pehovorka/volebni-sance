@@ -1,6 +1,6 @@
-import { ResponsiveLine, type Point, type SliceTooltipProps } from "@nivo/line";
-import { useWindowDimensions } from "@/hooks/useWindowDimensions";
-import { ChartData } from "@/pages";
+import { ResponsiveLine } from "@nivo/line";
+import { useWindowDimensions } from "~hooks/useWindowDimensions";
+import type { ChartData } from "~pages";
 
 interface ChartProps {
   data: ChartData;

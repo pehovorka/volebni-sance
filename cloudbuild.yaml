@@ -1,4 +1,4 @@
 steps:
   - name: gcr.io/$PROJECT_ID/firebase
-    dir: importer
+    dir: apps/importer
     args: ["deploy", "--project=$PROJECT_ID", "--only=functions"]

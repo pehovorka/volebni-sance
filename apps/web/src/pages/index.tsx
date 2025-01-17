@@ -11,17 +11,17 @@ import {
 
 import type { InferGetStaticPropsType } from "next";
 
-import styles from "@/styles/Home.module.css";
+import styles from "~styles/Home.module.css";
 
-import { Chart } from "@/components/Chart";
-import { CurrentOdds } from "@/components/CurrentOdds";
-import { db } from "@/utils/firebase";
+import { Chart } from "~components/Chart";
+import { CurrentOdds } from "~components/CurrentOdds";
+import { db } from "~utils/firebase";
 import {
   CollectionName,
   ElectionRecord,
 } from "../../../importer/functions/src/interfaces/database";
-import { getAdjustedProbability, getAdjustmentRatio } from "@/utils/odds";
-import { ArrowDown } from "@/components/ArrowDown";
+import { getAdjustedProbability, getAdjustmentRatio } from "~utils/odds";
+import { ArrowDown } from "~components/ArrowDown";
 import Link from "next/link";
 
 export type CurrentOdds = InferGetStaticPropsType<

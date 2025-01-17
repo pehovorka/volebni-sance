@@ -20,11 +20,13 @@
     "incremental": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "./src/*",
-        "../importer/functions/src/*"
+      "~*": [
+        "./src/*"
+      ],
+      "~public/*": [
+        "./public/*"
       ]
-    }
+    },
   },
   "include": [
     "next-env.d.ts",

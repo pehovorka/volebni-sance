@@ -1,5 +1,5 @@
-import { CurrentOdds as ICurrentOdds } from "@/pages";
-import styles from "@/styles/CurrentOdds.module.css";
+import type { CurrentOdds as ICurrentOdds } from "~pages";
+import styles from "~styles/CurrentOdds.module.css";
 import Image from "next/image";
 
 interface CurrentOddsProps {
