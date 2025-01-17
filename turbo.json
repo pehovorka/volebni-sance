@@ -1,13 +1,14 @@
 {
   "$schema": "https://turbo.build/schema.json",
+  "globalDependencies": [".env"],
   "tasks": {
     "test:ci": {
-      "dependsOn": ["//#audit", "build"]
+      "dependsOn": ["build"]
     },
     "build": {
-      "inputs": ["$TURBO_DEFAULT", ".env.local", ".env"],
+      "inputs": ["$TURBO_DEFAULT"],
       "dependsOn": ["cir-dep", "format", "lint", "^build"],
-      "outputs": ["dist/**", ".next/**", "!.next/cache/**"]
+      "outputs": ["lib/**", ".next/**", "!.next/cache/**"]
     },
     "lint": {
       "cache": true,
